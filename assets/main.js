@@ -12,12 +12,12 @@ function getParks() {
 
 function displayResults(data) {
   $(".results").empty();
+  let valueLength = $('.js-query').val();
   for (let i = 0; i < data.length; i++) {
     // console.log(data[i].fullName);
     // console.log(data[i].description);
-    
     $(".results").append(
-      `<ol><li>Name: ${data[i].fullName}</li></ol><li>Description: ${data[i].description}</li><li>WebSite: <a href="${data[i].url}">URL</a></li>`
+      `<ol><li>Name: ${data[i].fullName} ${total[valueLength]}</li></ol>`
     );
   }
 }
@@ -32,3 +32,7 @@ function clickForm() {
 $(function() {
   clickForm();
 });
+
+
+
+//<li>Description: ${data[i].description}</li><li>WebSite: <a href="${data[i].url}">URL</a></li>

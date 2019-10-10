@@ -1,38 +1,59 @@
-"use strict";
+'use strict'
 
-function getParks() {
-  let userValue = $("#parkValue").val();
-  fetch(
-    `https://developer.nps.gov/api/v1/parks?stateCode=${userValue}&api_key=ugQP2Zmj80Rp0eobwIE0QKWhUqk95p44B6q3ZFJ1`
-  )
-    .then(response => response.json())
-    .then(responseJson => displayResults(responseJson.data))
-    .catch(error => console.log(`Didn't log it `));
+
+const searchUrl = 'https://api.nps.gov/api/v1/parks';
+const apiKey = 'FdXlREi490J3oa6UaqKxEpo8OoJhxk3QZ8sztfL8';
+
+function formatQueryParams(params) {
+  const queryItems = Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+  return queryItems.join('&');
 }
 
-function displayResults(data) {
-  $(".results").empty();
-  let valueLength = $('.js-query').val();
-  for (let i = 0; i < data.length; i++) {
-    // console.log(data[i].fullName);
-    // console.log(data[i].description);
-    $(".results").append(
-      `<ol><li>Name: ${data[i].fullName} ${total[valueLength]}</li></ol>`
-    );
-  }
+function displayResults(responseJson) {
+  console.log(responseJson);
+  $('#results-list').empty();
+  for (let i=0; i<responseJson.data.length; i++) {
+    $('#results-list').append(`
+      <li><h3>${responseJson.data[i].fullName}</h3>
+      <a href='${responseJson.data[i].url}'>${responseJson.data[i].url}</a>
+      <p>${responseJson.data[i].description}</p>
+      </li>
+      `)
+  };
+  $('#results').removeClass('hidden');
 }
 
-function clickForm() {
-  $(".js-form").submit(event => {
+function getNationalParkInfo(query,limit=10) {
+  const params = {
+    api_key: apiKey,
+    q: query,
+    limit: limit,
+  };
+  const queryString = formatQueryParams(params)
+  const url = searchUrl + '?' + queryString;
+  console.log(url);
+
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    })
+    .then(responseJson => displayResults(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+    });
+}
+
+function watchForm() {
+  $('form').submit(event => {
     event.preventDefault();
-    getParks();
+    const searchTerm = $('#js-search-term').val();
+    const limit = $('#js-max-results').val();
+    getNationalParkInfo(searchTerm,limit);
   });
 }
 
-$(function() {
-  clickForm();
-});
-
-
-
-//<li>Description: ${data[i].description}</li><li>WebSite: <a href="${data[i].url}">URL</a></li>
+$(watchForm);

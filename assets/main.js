@@ -6,18 +6,21 @@ function getParks() {
     `https://developer.nps.gov/api/v1/parks?stateCode=${userValue}&api_key=ugQP2Zmj80Rp0eobwIE0QKWhUqk95p44B6q3ZFJ1`
   )
     .then(response => response.json())
-    .then(responseJson => displayResults(responseJson))
+    .then(responseJson => displayResults(responseJson.data))
     .catch(error => console.log(`Didn't log it `));
 }
 
-function displayResults(data){
-  $('.results').empty();
-  for( let i = 0; i < data.length; i++){
-  console.log(data[i].fullName)
-  console.log(data[i].description)
+function displayResults(data) {
+  $(".results").empty();
+  for (let i = 0; i < data.length; i++) {
+    // console.log(data[i].fullName);
+    // console.log(data[i].description);
+    
+    $(".results").append(
+      `<ol><li>Name: ${data[i].fullName}</li></ol><li>Description: ${data[i].description}</li><li>WebSite: <a href="${data[i].url}">URL</a></li>`
+    );
   }
 }
-//Full name, Description, Website URL
 
 function clickForm() {
   $(".js-form").submit(event => {

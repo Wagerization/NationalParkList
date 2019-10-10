@@ -1,18 +1,22 @@
+"use strict";
 
-'use strict';
-
-const url = 'https://developer.nps.gov/api/v1?api_key=nVtBJ1VHN0WNb6109Wst1kQ1MoxtLcKkYx4n9TCS';
-
- function getParks(){
-
-    fetch(url)
-    .then( response => response.json()
-    .then(responseJson => console.log(responseJson)))
+function getParks() {
+let userValue = $(".parkValue").val();
+const url = `https://developer.nps.gov/api/v1/parks?stateCode=${userValue}&api_key=ugQP2Zmj80Rp0eobwIE0QKWhUqk95p44B6q3ZFJ1`;
+  fetch(url)
+  .then(response => response.json()
+  .then(responseJson => console.log(responseJson))
+  .catch( error => console.log('Didn"t log it '))
+  );
 }
 
-$(function(){
+function clickForm() {
+  $(".js-form").submit(event => {
+    event.preventDefault();
     getParks();
-})
+  });
+}
 
-
-
+$(function() {
+  getParks();
+});

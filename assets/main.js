@@ -4,14 +4,14 @@
  
 
  function getParks(){
-    const url = 'https://developer.nps.gov/api/v1/parks/';
+    const url = 'https://developer.nps.gov/api/v1';
     
     const options  = {
         headers : new Headers ({
             'api_key': apiKey})
     };
 
-    fetch(url)
+    fetch(url, options)
     .then( response => response.json()
     .then(responseJson => console.log(responseJson)))
 }

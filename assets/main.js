@@ -1,6 +1,5 @@
 'use strict'
 
-
 const searchUrl = 'https://api.nps.gov/api/v1/parks';
 const apiKey = 'FdXlREi490J3oa6UaqKxEpo8OoJhxk3QZ8sztfL8';
 
@@ -11,7 +10,6 @@ function formatQueryParams(params) {
 }
 
 function displayResults(responseJson) {
-  console.log(responseJson);
   $('#results-list').empty();
   for (let i=0; i<responseJson.data.length; i++) {
     $('#results-list').append(`
@@ -32,7 +30,6 @@ function getNationalParkInfo(query,limit=10) {
   };
   const queryString = formatQueryParams(params)
   const url = searchUrl + '?' + queryString;
-  console.log(url);
 
   fetch(url)
     .then(response => {

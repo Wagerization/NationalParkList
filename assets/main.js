@@ -1,7 +1,7 @@
 'use strict'
 
 const searchUrl = 'https://api.nps.gov/api/v1/parks';
-const apiKey = 'FdXlREi490J3oa6UaqKxEpo8OoJhxk3QZ8sztfL8';
+const apiKey = 'yV9BiqRON1CEt7Wepxet12knSwtgAYlT5AaNt2k1';
 
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
@@ -12,6 +12,7 @@ function formatQueryParams(params) {
 function displayResults(responseJson) {
   $('#results-list').empty();
   for (let i=0; i<responseJson.data.length; i++) {
+    console.log(responseJson);
     $('#results-list').append(`
       <li><h3>${responseJson.data[i].fullName}</h3>
       <a href='${responseJson.data[i].url}'>${responseJson.data[i].url}</a>
@@ -24,15 +25,18 @@ function displayResults(responseJson) {
 
 function getNationalParkInfo(query,limit=10) {
   const params = {
+    stateCode: query,
     api_key: apiKey,
-    q: query,
     limit: limit,
   };
-  const queryString = formatQueryParams(params)
+  const queryString = formatQueryParams(params);
+  console.log(queryString);
   const url = searchUrl + '?' + queryString;
+  console.log(url);
 
   fetch(url)
     .then(response => {
+      console.log(url);
       if (response.ok) {
         return response.json();
       }
